@@ -15,24 +15,28 @@ class SeriesCreated
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * Create a new event instance.
+     * Cria uma nova instância do evento.
      *
+     * @param string $seriesName Nome da série.
+     * @param int $seriesId ID da série.
+     * @param int $seriesSeasonsQty Quantidade de temporadas da série.
+     * @param int $seriesEpisodesPerSeason Quantidade de episódios por temporada.
      * @return void
      */
     public function __construct(
         public readonly string $seriesName,
         public readonly int $seriesId,
         public readonly int $seriesSeasonsQty,
-        public readonly int $seriesEpisodesPerSeason,
+        public readonly int $seriesEpisodesPerSeason
     ) {}
 
     /**
-     * Get the channels the event should broadcast on.
+     * Obtém os canais nos quais o evento deve ser transmitido.
      *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return Channel|array
      */
-    public function broadcastOn()
+    public function broadcastOn(): Channel|array
     {
-        return new PrivateChannel('channel-name');
+        return new PrivateChannel('series-created.' . $this->seriesId);
     }
 }
